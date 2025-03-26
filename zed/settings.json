@@ -7,15 +7,34 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "telemetry": {
-    "metrics": false,
-    "diagnostics": false
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-7-sonnet-latest"
+    },
+    "version": "2"
+  },
+  "vim_mode": false,
+  "theme": "GitHub Dark Default",
+  "features": {
+    "edit_prediction_provider": "none"
+  },
+  "collaboration_panel": {
+    "button": false
+  },
+  "outline_panel": {
+    "button": false
+  },
+  "project_panel": {
+    "button": false
+  },
+  "terminal": {
+    "button": false
+  },
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false
   },
   "ui_font_size": 16,
-  "buffer_font_size": 16,
-  "theme": {
-    "mode": "system",
-    "light": "One Light",
-    "dark": "One Dark"
-  }
+  "buffer_font_size": 16
 }

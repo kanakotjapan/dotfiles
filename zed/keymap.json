@@ -7,15 +7,52 @@
 // from the command palette.
 [
   {
-    "context": "Workspace",
     "bindings": {
-      // "shift shift": "file_finder::Toggle"
+      "cmd-,": "editor::ToggleInlayHints",
+      "cmd-+": "zed::IncreaseBufferFontSize",
+      "cmd-_": "zed::DecreaseBufferFontSize",
+      "cmd-e": "project_panel::ToggleFocus",
+      "cmd--": "pane::GoBack",
+      "cmd-=": "pane::GoForward"
     }
   },
   {
     "context": "Editor",
     "bindings": {
-      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "cmd-r": "editor::FindAllReferences",
+      "cmd-g": "editor::GoToDefinition",
+      "cmd-o": "outline::Toggle",
+      "cmd-;": "go_to_line::Toggle"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "cmd-e": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "cmd-j cmd-n": "workspace::NewTerminal",
+      "cmd-j cmd-1": ["pane::ActivateItem", 0],
+      "cmd-j cmd-2": ["pane::ActivateItem", 1],
+      "cmd-j cmd-3": ["pane::ActivateItem", 2],
+      "cmd-j cmd-4": ["pane::ActivateItem", 3],
+      "cmd-j cmd-5": ["pane::ActivateItem", 4],
+      "cmd-j cmd-6": ["pane::ActivateItem", 5],
+      "cmd-j cmd-7": ["pane::ActivateItem", 6],
+      "cmd-j cmd-8": ["pane::ActivateItem", 7]
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-j cmd-j": "workspace::ToggleBottomDock",
+      "cmd-k cmd-,": "zed::OpenSettings",
+      "cmd-k cmd-p": "projects::OpenRecent",
+      "cmd-k cmd-b": "branches::OpenRecent",
+      "cmd-k cmd-n": "workspace::NewWindow"
     }
   }
 ]
