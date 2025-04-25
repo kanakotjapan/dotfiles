@@ -8,6 +8,10 @@ return {
 				rust = { "rustfmt" },
 				markdown = { "prettierd" },
 				html = { "prettierd" },
+				go = { "gofmt" },
+				vue = { "prettierd" },
+				typescript = { "prettierd" },
+				javascript = { "prettierd" },
 			},
 			format_on_save = {
 				timeout_ms = 500,

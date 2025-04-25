@@ -3,9 +3,7 @@ local wezterm = require("wezterm")
 local utils = require("utils")
 local workspaces = require("workspaces")
 local utils_vim = require("utils-vim")
-
 local act = wezterm.action
-local mux = wezterm.mux
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -20,7 +18,7 @@ config.window_padding = {
 	top = 25,
 	left = 25,
 	right = 25,
-	bottom = 25,
+	bottom = 10,
 }
 
 -- Tabs
