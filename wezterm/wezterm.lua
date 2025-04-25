@@ -1,12 +1,18 @@
 -- Pull in the wezterm API
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
 local utils = require("utils")
-local projects = require("projects")
+local workspaces = require("workspaces")
+local utils_vim = require("utils-vim")
+
+local act = wezterm.action
+local mux = wezterm.mux
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
--- This is where you actually apply your config choices
+-- FPS
+config.max_fps = 144
+config.animation_fps = 144
 
 -- Window
 config.window_decorations = "RESIZE"
@@ -21,8 +27,14 @@ config.window_padding = {
 -- config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 
+-- Panes
+config.inactive_pane_hsb = {
+	saturation = 1.0,
+	brightness = 0.5,
+}
+
 -- Styling
-config.color_scheme = 'GitHub Dark'
+config.color_scheme = "GitHub Dark"
 
 -- Fonts
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
@@ -34,13 +46,138 @@ config.keys = {
 	-- Wezterm
 	-- Disable defaults
 	utils.disable_default("CMD", "k"),
-	
+	utils.disable_default("CMD", "w"),
+	utils.disable_default("CMD", "n"),
+	utils.disable_default("CMD", "f"),
+	utils.disable_default("CMD", "+"),
+	utils.disable_default("CMD", "-"),
+	utils.disable_default("CMD", "r"),
 	-- Sessions
+	{
+		key = "Backspace",
+		mods = "CMD",
+		action = workspaces.toggle_workspace(),
+	},
 	{
 		key = "p",
 		mods = "LEADER|CMD",
-		action = projects.choose_project(),
+		action = workspaces.choose_project(),
 	},
+	{
+		key = "n",
+		mods = "CMD",
+		action = workspaces.switch_to_notes_workspace(),
+	},
+	{
+		key = "F1",
+		mods = "ALT",
+		action = workspaces.save_workspace(1),
+	},
+	{
+		key = "F2",
+		mods = "ALT",
+		action = workspaces.save_workspace(2),
+	},
+	{
+		key = "F3",
+		mods = "ALT",
+		action = workspaces.save_workspace(3),
+	},
+	{
+		key = "F4",
+		mods = "ALT",
+		action = workspaces.save_workspace(4),
+	},
+	{
+		key = "F1",
+		action = workspaces.switch_to_saved_workspace(1),
+	},
+	{
+		key = "F2",
+		action = workspaces.switch_to_saved_workspace(2),
+	},
+	{
+		key = "F3",
+		action = workspaces.switch_to_saved_workspace(3),
+	},
+	{
+		key = "F4",
+		action = workspaces.switch_to_saved_workspace(4),
+	},
+	-- Tabs
+	{
+		mods = "LEADER|CMD",
+		key = "n",
+		action = act.SpawnTab("CurrentPaneDomain"),
+	},
+	{
+		mods = "LEADER|CMD",
+		key = "1",
+		action = act.ActivateTab(0),
+	},
+	{
+		mods = "LEADER|CMD",
+		key = "2",
+		action = act.ActivateTab(1),
+	},
+	{
+		mods = "LEADER|CMD",
+		key = "3",
+		action = act.ActivateTab(2),
+	},
+	{
+		mods = "LEADER|CMD",
+		key = "4",
+		action = act.ActivateTab(3),
+	},
+	{
+		mods = "LEADER|CMD",
+		key = "5",
+		action = act.ActivateTab(4),
+	},
+
+	-- Wezterm & Neovim
+	-- Panes
+	utils_vim.key_map_vim_mix_pane_vertical_split("LEADER|CMD", "-"),
+	utils_vim.key_map_vim_mix_pane_horizontal_split("LEADER|CMD", "\\"),
+	utils_vim.key_map_vim_mix_pane_close("LEADER|CMD", "w"),
+	utils_vim.key_map_vim_mix_pane_zoom("LEADER|CMD", "f"),
+	utils_vim.key_map_vim_mix_pane_zoom_out("LEADER|CMD", "g"),
+	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "h", "Left"),
+	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "j", "Down"),
+	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "k", "Up"),
+	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "l", "Right"),
+
+	-- Neovim
+	-- Telescope file finder
+	utils_vim.key_map_vim_mix(
+		"CMD",
+		"p",
+		act.Multiple({
+			act.SendKey({ key = " " }),
+			act.SendKey({ key = "f" }),
+			act.SendKey({ key = "f" }),
+		})
+	),
+	-- Telescope lsp symbol finder
+	utils_vim.key_map_vim_mix(
+		"CMD",
+		"o",
+		act.Multiple({
+			act.SendKey({ key = " " }),
+			act.SendKey({ key = "f" }),
+			act.SendKey({ key = "o" }),
+		})
+	),
+	-- Harpoon navigation
+	utils_vim.key_map_vim_mix("CMD", "h", act.SendKey({ mods = "ALT", key = "h" })),
+	utils_vim.key_map_vim_mix("CMD", "1", act.SendKey({ mods = "ALT", key = "!" })),
+	utils_vim.key_map_vim_mix("CMD", "2", act.SendKey({ mods = "ALT", key = "@" })),
+	utils_vim.key_map_vim_mix("CMD", "3", act.SendKey({ mods = "ALT", key = "#" })),
+	utils_vim.key_map_vim_mix("CMD", "4", act.SendKey({ mods = "ALT", key = "$" })),
+	utils_vim.key_map_vim_mix("CMD", "5", act.SendKey({ mods = "ALT", key = "%" })),
+	-- Multi cursor
+	utils_vim.key_map_vim_mix("CMD", "d", act.SendKey({ mods = "CTRL", key = "n" })),
 }
 -- and finally, return the configuration to wezterm
 return config

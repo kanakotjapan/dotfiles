@@ -14,6 +14,7 @@ source $(brew --prefix)/share/zsh-you-should-use/you-should-use.plugin.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Aliases
+alias n='nvim .'
 alias ls='eza'
 alias ll='ls -lh --git --icons=always'
 alias lla='ll -a'

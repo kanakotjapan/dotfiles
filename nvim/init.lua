@@ -1,0 +1,2 @@
+require("kanakotjapan")
+require("lazynvim")
