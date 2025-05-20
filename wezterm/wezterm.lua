@@ -9,8 +9,8 @@ local act = wezterm.action
 local config = wezterm.config_builder()
 
 -- FPS
-config.max_fps = 144
-config.animation_fps = 144
+config.max_fps = 160
+config.animation_fps = 160
 
 -- Window
 config.window_decorations = "RESIZE"
@@ -36,7 +36,8 @@ config.color_scheme = "GitHub Dark"
 
 -- Fonts
 config.font = wezterm.font("MesloLGS Nerd Font Mono")
-config.font_size = 16.0
+config.font_size = 15.0
+config.line_height = 1.25
 
 -- Keymapping
 config.leader = { key = "k", mods = "CMD", timeout_milliseconds = 2000 }

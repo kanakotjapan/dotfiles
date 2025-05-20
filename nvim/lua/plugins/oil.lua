@@ -1,10 +1,11 @@
 return {
 	"stevearc/oil.nvim",
-    lazy = false,
+	lazy = false,
 	config = function()
 		require("oil").setup({
 			view_options = {
 				show_hidden = false,
+				is_hidden_file = require("custom.oil_git_visibility").is_hidden,
 			},
 			skip_confirm_for_simple_edits = true,
 		})
