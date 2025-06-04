@@ -35,7 +35,7 @@ config.inactive_pane_hsb = {
 config.color_scheme = "GitHub Dark"
 
 -- Fonts
-config.font = wezterm.font("MesloLGS Nerd Font Mono")
+config.font = wezterm.font("MesloLGS Nerd Font")
 config.font_size = 15.0
 config.line_height = 1.25
 

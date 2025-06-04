@@ -1,5 +1,3 @@
-local mason_registry = require("mason-registry")
-
 return {
 	cmd = { "vtsls", "--stdio" },
 	filetypes = {
@@ -24,8 +22,9 @@ return {
 				globalPlugins = {
 					{
 						name = "@vue/typescript-plugin",
-						location = mason_registry.get_package("vue-language-server"):get_install_path()
-							.. "/node_modules/@vue/language-server",
+						location = vim.fn.expand(
+							"$MASON/packages/vue-language-server/node_modules/@vue/language-server"
+						),
 						languages = { "vue" },
 						configNamespace = "typescript",
 						enableForWorkspaceTypeScriptVersions = true,

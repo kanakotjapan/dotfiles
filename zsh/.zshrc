@@ -32,3 +32,9 @@ alias gl="git pull"
 alias gd="git diff"
 
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/kanakotjapan/Documents/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/kanakotjapan/Documents/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/kanakotjapan/Documents/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/kanakotjapan/Documents/google-cloud-sdk/completion.zsh.inc'; fi
