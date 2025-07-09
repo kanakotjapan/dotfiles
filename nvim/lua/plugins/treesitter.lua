@@ -5,6 +5,9 @@ return {
 			"JoosepAlviste/nvim-ts-context-commentstring",
 			lazy = true,
 		},
+		{
+			"windwp/nvim-ts-autotag",
+		},
 	},
 	version = false,
 	event = { "BufReadPre", "BufNewFile" },
@@ -18,6 +21,8 @@ return {
 				additional_vim_regex_highlighting = false,
 			},
 		})
+
+		require("nvim-ts-autotag").setup()
 
 		-- Lowering the LSP priority so treesitter has higher priority.
 		vim.highlight.priorities.semantic_tokens = 95
