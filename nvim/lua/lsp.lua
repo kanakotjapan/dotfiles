@@ -1,6 +1,6 @@
 vim.diagnostic.config({ severity_sort = true })
 
-vim.lsp.enable({ "lua", "go", "ts", "eslint", "tailwindcss", "html", "rust", "vue" })
+vim.lsp.enable({ "lua", "go", "ts", "eslint", "tailwindcss", "html", "rust", "vue", "elixir" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)

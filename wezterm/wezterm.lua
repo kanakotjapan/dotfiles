@@ -20,6 +20,9 @@ config.window_padding = {
 	right = 25,
 	bottom = 10,
 }
+-- Set initial window size (cols, rows)
+config.initial_rows = 60
+config.initial_cols = 164
 
 -- Tabs
 -- config.tab_bar_at_bottom = true
