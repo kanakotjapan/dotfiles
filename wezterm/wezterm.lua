@@ -43,117 +43,122 @@ config.font_size = 15.0
 config.line_height = 1.25
 
 -- Keymapping
-config.leader = { key = "k", mods = "CMD", timeout_milliseconds = 2000 }
+local mod = "SUPER"
+local leader_mod = "LEADER|" .. mod
+
+config.leader = { key = "k", mods = mod, timeout_milliseconds = 2000 }
 config.keys = {
 	-- Wezterm
 	-- Disable defaults
-	utils.disable_default("CMD", "k"),
-	utils.disable_default("CMD", "w"),
-	utils.disable_default("CMD", "n"),
-	utils.disable_default("CMD", "f"),
-	utils.disable_default("CMD", "+"),
-	utils.disable_default("CMD", "-"),
-	utils.disable_default("CMD", "r"),
+	utils.disable_default(mod, "k"),
+	utils.disable_default(mod, "w"),
+	utils.disable_default(mod, "n"),
+	utils.disable_default(mod, "f"),
+	utils.disable_default(mod, "+"),
+	utils.disable_default(mod, "-"),
+	utils.disable_default(mod, "r"),
 	-- Sessions
 	{
+		mods = mod,
 		key = "Backspace",
-		mods = "CMD",
 		action = workspaces.toggle_workspace(),
 	},
 	{
+		mods = leader_mod,
 		key = "p",
-		mods = "LEADER|CMD",
 		action = workspaces.choose_project(),
 	},
 	{
-		key = "n",
-		mods = "CMD",
-		action = workspaces.switch_to_notes_workspace(),
-	},
-	{
+		mods = "CTRL",
 		key = "F1",
-		mods = "ALT",
 		action = workspaces.save_workspace(1),
 	},
 	{
+		mods = "CTRL",
 		key = "F2",
-		mods = "ALT",
 		action = workspaces.save_workspace(2),
 	},
 	{
+		mods = "CTRL",
 		key = "F3",
-		mods = "ALT",
 		action = workspaces.save_workspace(3),
 	},
 	{
+		mods = "CTRL",
 		key = "F4",
-		mods = "ALT",
 		action = workspaces.save_workspace(4),
 	},
 	{
+		mods = mod,
 		key = "F1",
 		action = workspaces.switch_to_saved_workspace(1),
 	},
 	{
+		mods = mod,
 		key = "F2",
 		action = workspaces.switch_to_saved_workspace(2),
 	},
 	{
+		mods = mod,
 		key = "F3",
 		action = workspaces.switch_to_saved_workspace(3),
 	},
 	{
+		mods = mod,
 		key = "F4",
 		action = workspaces.switch_to_saved_workspace(4),
 	},
 	-- Tabs
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "n",
 		action = act.SpawnTab("CurrentPaneDomain"),
 	},
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "1",
 		action = act.ActivateTab(0),
 	},
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "2",
 		action = act.ActivateTab(1),
 	},
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "3",
 		action = act.ActivateTab(2),
 	},
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "4",
 		action = act.ActivateTab(3),
 	},
 	{
-		mods = "LEADER|CMD",
+		mods = leader_mod,
 		key = "5",
 		action = act.ActivateTab(4),
 	},
 
+	-- OpenCode
+	utils.key_map_mix(mod, "i", act.SendKey({ mods = "CTRL", key = "x" })),
+
 	-- Wezterm & Neovim
 	-- Panes
-	utils_vim.key_map_vim_mix_pane_vertical_split("LEADER|CMD", "-"),
-	utils_vim.key_map_vim_mix_pane_horizontal_split("LEADER|CMD", "\\"),
-	utils_vim.key_map_vim_mix_pane_close("LEADER|CMD", "w"),
-	utils_vim.key_map_vim_mix_pane_zoom("LEADER|CMD", "f"),
-	utils_vim.key_map_vim_mix_pane_zoom_out("LEADER|CMD", "g"),
-	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "h", "Left"),
-	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "j", "Down"),
-	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "k", "Up"),
-	utils_vim.key_map_vim_mix_pane_navigation("LEADER|CMD", "l", "Right"),
+	utils_vim.key_map_vim_mix_pane_vertical_split(leader_mod, "-"),
+	utils_vim.key_map_vim_mix_pane_horizontal_split(leader_mod, "\\"),
+	utils_vim.key_map_vim_mix_pane_close(leader_mod, "w"),
+	utils_vim.key_map_vim_mix_pane_zoom(leader_mod, "f"),
+	utils_vim.key_map_vim_mix_pane_zoom_out(leader_mod, "g"),
+	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "h", "Left"),
+	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "j", "Down"),
+	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "k", "Up"),
+	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "l", "Right"),
 
 	-- Neovim
 	-- Telescope file finder
 	utils_vim.key_map_vim_mix(
-		"CMD",
+		mod,
 		"p",
 		act.Multiple({
 			act.SendKey({ key = " " }),
@@ -163,7 +168,7 @@ config.keys = {
 	),
 	-- Telescope lsp symbol finder
 	utils_vim.key_map_vim_mix(
-		"CMD",
+		mod,
 		"o",
 		act.Multiple({
 			act.SendKey({ key = " " }),
@@ -172,14 +177,14 @@ config.keys = {
 		})
 	),
 	-- Harpoon navigation
-	utils_vim.key_map_vim_mix("CMD", "h", act.SendKey({ mods = "ALT", key = "h" })),
-	utils_vim.key_map_vim_mix("CMD", "1", act.SendKey({ mods = "ALT", key = "!" })),
-	utils_vim.key_map_vim_mix("CMD", "2", act.SendKey({ mods = "ALT", key = "@" })),
-	utils_vim.key_map_vim_mix("CMD", "3", act.SendKey({ mods = "ALT", key = "#" })),
-	utils_vim.key_map_vim_mix("CMD", "4", act.SendKey({ mods = "ALT", key = "$" })),
-	utils_vim.key_map_vim_mix("CMD", "5", act.SendKey({ mods = "ALT", key = "%" })),
+	utils_vim.key_map_vim_mix(mod, "h", act.SendKey({ mods = "CTRL", key = "h" })),
+	utils_vim.key_map_vim_mix(mod, "1", act.SendKey({ mods = "CTRL", key = "!" })),
+	utils_vim.key_map_vim_mix(mod, "2", act.SendKey({ mods = "CTRL", key = "@" })),
+	utils_vim.key_map_vim_mix(mod, "3", act.SendKey({ mods = "CTRL", key = "#" })),
+	utils_vim.key_map_vim_mix(mod, "4", act.SendKey({ mods = "CTRL", key = "$" })),
+	utils_vim.key_map_vim_mix(mod, "5", act.SendKey({ mods = "CTRL", key = "%" })),
 	-- Multi cursor
-	utils_vim.key_map_vim_mix("CMD", "d", act.SendKey({ mods = "CTRL", key = "n" })),
+	utils_vim.key_map_vim_mix(mod, "d", act.SendKey({ mods = "CTRL", key = "n" })),
 }
 -- and finally, return the configuration to wezterm
 return config

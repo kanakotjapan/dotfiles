@@ -2,10 +2,13 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_CUSTOM=$HOME/.config/zsh/custom
-ZSH_THEME="fwalch"
-
+# ZSH_THEME="fwalch"
+ZSH_THEME="theme"
 DISABLE_AUTO_TITLE="true"
 DISABLE_LS_COLORS="true"
+VI_MODE_SET_CURSOR=false
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=false
+KEYTIMEOUT=1
 
 plugins=(
     git
@@ -17,11 +20,22 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# Clear vi-mode right prompt (mode indicator handled by theme)
+RPS1=''
+RPROMPT=''
+
+# Exports
+export EDITOR='nvim'
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Hotkeys
+bindkey '^E' edit-command-line
+
 # Aliases
+alias reload="source ~/.zshrc"
 alias n='nvim .'
 alias ls='eza'
 alias ll='ls -lh --git --icons=always'
 alias lla='ll -a'
 alias lg="lazygit"
-alias reload="source ~/.zshrc"
 
