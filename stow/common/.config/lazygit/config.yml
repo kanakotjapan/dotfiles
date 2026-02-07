@@ -1,0 +1,13 @@
+gui:
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 3
+
+  showFileTree: false
+  showNumstatInFilesView: true
+  showRandomTip: false
+  showCommandLog: false
+  showBottomLine: false
+  showPanelJumps: false
+
+  promptToReturnFromSubprocess: false
+
