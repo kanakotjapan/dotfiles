@@ -16,6 +16,10 @@ return {
 				mappings = {
 					i = {
 						["<esc>"] = actions.close,
+						["<C-q>"] = actions.send_selected_to_qflist,
+					},
+					n = {
+						["<C-q>"] = actions.send_selected_to_qflist,
 					},
 				},
 			},

@@ -1,9 +1,13 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
-local utils = require("utils")
-local workspaces = require("workspaces")
-local utils_vim = require("utils-vim")
 local act = wezterm.action
+local utils_vim = require("utils-vim")
+local workspaces = require("workspaces")
+local worktrees = require("worktrees")
+
+wezterm.on("update-status", function(window, _)
+	window:set_right_status(" " .. workspaces.status_text(window:active_workspace()) .. " ")
+end)
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -49,14 +53,6 @@ local leader_mod = "LEADER|" .. mod
 config.leader = { key = "k", mods = mod, timeout_milliseconds = 2000 }
 config.keys = {
 	-- Wezterm
-	-- Disable defaults
-	utils.disable_default(mod, "k"),
-	utils.disable_default(mod, "w"),
-	utils.disable_default(mod, "n"),
-	utils.disable_default(mod, "f"),
-	utils.disable_default(mod, "+"),
-	utils.disable_default(mod, "-"),
-	utils.disable_default(mod, "r"),
 	-- Sessions
 	{
 		mods = mod,
@@ -65,48 +61,18 @@ config.keys = {
 	},
 	{
 		mods = leader_mod,
+		key = "o",
+		action = worktrees.choose_worktree(),
+	},
+	{
+		mods = leader_mod,
 		key = "p",
 		action = workspaces.choose_project(),
 	},
 	{
-		mods = "CTRL",
-		key = "F1",
-		action = workspaces.save_workspace(1),
-	},
-	{
-		mods = "CTRL",
-		key = "F2",
-		action = workspaces.save_workspace(2),
-	},
-	{
-		mods = "CTRL",
-		key = "F3",
-		action = workspaces.save_workspace(3),
-	},
-	{
-		mods = "CTRL",
-		key = "F4",
-		action = workspaces.save_workspace(4),
-	},
-	{
-		mods = mod,
-		key = "F1",
-		action = workspaces.switch_to_saved_workspace(1),
-	},
-	{
-		mods = mod,
-		key = "F2",
-		action = workspaces.switch_to_saved_workspace(2),
-	},
-	{
-		mods = mod,
-		key = "F3",
-		action = workspaces.switch_to_saved_workspace(3),
-	},
-	{
-		mods = mod,
-		key = "F4",
-		action = workspaces.switch_to_saved_workspace(4),
+		mods = leader_mod,
+		key = "s",
+		action = workspaces.choose_workspace(),
 	},
 	-- Tabs
 	{
@@ -114,46 +80,101 @@ config.keys = {
 		key = "n",
 		action = act.SpawnTab("CurrentPaneDomain"),
 	},
-	{
-		mods = leader_mod,
-		key = "1",
-		action = act.ActivateTab(0),
-	},
-	{
-		mods = leader_mod,
-		key = "2",
-		action = act.ActivateTab(1),
-	},
-	{
-		mods = leader_mod,
-		key = "3",
-		action = act.ActivateTab(2),
-	},
-	{
-		mods = leader_mod,
-		key = "4",
-		action = act.ActivateTab(3),
-	},
-	{
-		mods = leader_mod,
-		key = "5",
-		action = act.ActivateTab(4),
-	},
 
 	-- OpenCode
-	utils.key_map_mix(mod, "i", act.SendKey({ mods = "CTRL", key = "x" })),
+	{
+		key = "i",
+		mods = mod,
+		action = act.SendKey({ mods = "CTRL", key = "x" }),
+	},
 
 	-- Wezterm & Neovim
 	-- Panes
-	utils_vim.key_map_vim_mix_pane_vertical_split(leader_mod, "-"),
-	utils_vim.key_map_vim_mix_pane_horizontal_split(leader_mod, "\\"),
-	utils_vim.key_map_vim_mix_pane_close(leader_mod, "w"),
-	utils_vim.key_map_vim_mix_pane_zoom(leader_mod, "f"),
-	utils_vim.key_map_vim_mix_pane_zoom_out(leader_mod, "g"),
-	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "h", "Left"),
-	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "j", "Down"),
-	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "k", "Up"),
-	utils_vim.key_map_vim_mix_pane_navigation(leader_mod, "l", "Right"),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"-",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "s" }),
+		}),
+		act.SplitVertical({ domain = "CurrentPaneDomain" })
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"\\",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "v" }),
+		}),
+		act.SplitHorizontal({ domain = "CurrentPaneDomain" })
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"w",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "q" }),
+		}),
+		act.CloseCurrentPane({ confirm = true })
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"f",
+		act.Multiple({
+			act.SetPaneZoomState(true),
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "|" }),
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "_" }),
+		}),
+		act.SetPaneZoomState(true)
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"g",
+		act.Multiple({
+			act.SetPaneZoomState(false),
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "=" }),
+		}),
+		act.SetPaneZoomState(false)
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"h",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "h" }),
+		}),
+		act.ActivatePaneDirection("Left")
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"j",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "j" }),
+		}),
+		act.ActivatePaneDirection("Down")
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"k",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "k" }),
+		}),
+		act.ActivatePaneDirection("Up")
+	),
+	utils_vim.key_map_vim_mix(
+		leader_mod,
+		"l",
+		act.Multiple({
+			act.SendKey({ key = "w", mods = "CTRL" }),
+			act.SendKey({ key = "l" }),
+		}),
+		act.ActivatePaneDirection("Right")
+	),
 	utils_vim.key_map_vim_mix(
 		leader_mod,
 		";",
@@ -194,5 +215,35 @@ config.keys = {
 	-- Multi cursor
 	utils_vim.key_map_vim_mix(mod, "d", act.SendKey({ mods = "CTRL", key = "n" })),
 }
--- and finally, return the configuration to wezterm
+
+for _, key in ipairs({ "k", "w", "n", "f", "+", "-", "r" }) do
+	table.insert(config.keys, 1, {
+		mods = mod,
+		key = key,
+		action = act.DisableDefaultAssignment,
+	})
+end
+
+for slot = 1, 12 do
+	table.insert(config.keys, {
+		mods = "CTRL",
+		key = "F" .. slot,
+		action = workspaces.save_workspace(slot),
+	})
+
+	table.insert(config.keys, {
+		mods = "NONE",
+		key = "F" .. slot,
+		action = workspaces.switch_to_saved_workspace(slot),
+	})
+end
+
+for tab = 1, 9 do
+	table.insert(config.keys, {
+		mods = leader_mod,
+		key = tostring(tab),
+		action = act.ActivateTab(tab - 1),
+	})
+end
+
 return config
