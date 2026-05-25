@@ -1,6 +1,8 @@
 gui:
+  sidePanelWidth: 0.4
   expandFocusedSidePanel: true
   expandedSidePanelWeight: 3
+  wrapLinesInStagingView: false
 
   showFileTree: false
   showNumstatInFilesView: true

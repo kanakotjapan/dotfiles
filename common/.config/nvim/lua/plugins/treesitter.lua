@@ -49,6 +49,6 @@ return {
 		})
 
 		-- Lowering the LSP priority so treesitter has higher priority.
-		vim.highlight.priorities.semantic_tokens = 95
+		-- vim.highlight.priorities.semantic_tokens = 95
 	end,
 }
