@@ -1,0 +1,6 @@
+gui:
+  sidePanelWidth: 0.4
+  expandFocusedSidePanel: true
+  wrapMainPanel: false
+  showBottomLine: false
+  returnImmediately: true

@@ -4,7 +4,5 @@
     "messages_half_page_down": "ctrl+d",
     "messages_half_page_up": "ctrl+u"
   },
-  "plugin": [
-    "@shivambaku/opencode-ledger"
-  ]
+  "plugin": []
 }

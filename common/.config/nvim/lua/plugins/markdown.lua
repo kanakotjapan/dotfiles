@@ -5,7 +5,21 @@ return {
 	config = function()
 		require("render-markdown").setup({
 			file_types = { "markdown" },
+			anti_conceal = {
+				ignore = {
+					link = true,
+				},
+			},
+			pipe_table = {
+				cell = "trimmed",
+			},
+			html = {
+				tag = {
+					br = { icon = " / ", highlight = "RenderMarkdownTableRow" },
+				},
+			},
 			win_options = {
+				concealcursor = { default = "", rendered = "nvic" },
 				wrap = { default = false, rendered = false },
 			},
 			sign = {
@@ -25,6 +39,9 @@ return {
 					youtube = { icon = "" },
 				},
 			},
+		})
+		vim.keymap.set("n", "<leader>m", require("render-markdown").toggle, {
+			desc = "Toggle Markdown rendering",
 		})
 	end,
 }
