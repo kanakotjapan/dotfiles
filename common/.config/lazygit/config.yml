@@ -1,3 +1,5 @@
+git:
+  autoFetch: false
 gui:
   sidePanelWidth: 0.4
   expandFocusedSidePanel: true
