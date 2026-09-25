@@ -7,6 +7,15 @@ if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
   mv "$HOME/.zshrc" "$HOME/.zshrc.backup"
 fi
 
+# Keep the XDG config root as a real directory. If it does not exist, Stow
+# folds common/.config into a single ~/.config symlink, causing unrelated
+# applications to write their local state into this repository.
+if [[ -L "$HOME/.config" ]]; then
+  error "$HOME/.config must be a real directory before stowing dotfiles"
+  exit 1
+fi
+mkdir -p "$HOME/.config"
+
 log "Initializing git submodules..."
 git -C "$DOTFILES_DIR" submodule update --init --recursive
 
